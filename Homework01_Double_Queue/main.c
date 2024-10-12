@@ -18,11 +18,20 @@ void initializeDoubleQueue(DOUBLE_QUEUE* dq) {
 	return;
 }
 
+bool checkOverflow(int base, int offset) {
+	if (offset - base + 1 > DATA_MAX) return false;
+	return true;
+}
+
 bool pushFront(DOUBLE_QUEUE* dq, int value) {
-	if (dq->offset - dq->base + 1 < DATA_MAX) return false;
+	if (checkOverflow(dq->base, dq->offset)) return false;
 	if (dq->offset + 1 == ARRAY_MAX) return false;
 	dq->value[dq->base + dq->offset + 1] = value;
 	return true;
+}
+
+bool pushBack(DOUBLE_QUEUE* dq, int value) {
+	if (dq->offset -)
 }
 
 int popBack(DOUBLE_QUEUE* dq) {
