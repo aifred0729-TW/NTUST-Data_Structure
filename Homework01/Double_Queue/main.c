@@ -76,7 +76,7 @@ bool pushBack(DOUBLE_QUEUE* dq, int value) {
 
 bool pushFront(DOUBLE_QUEUE* dq, int value) {
     if (checkBufferOverflow(*dq)) return false;
-    if (getArrayStart(*dq) -1 <= 0) reAllocator(dq);
+    if (getArrayStart(*dq) - 1 <= 0) reAllocator(dq);
     printf("[*] Push %d into queue front\n", value);
     dq->value[dq->base - 1] = value;
     dq->offset++;
@@ -113,7 +113,7 @@ int popController(DOUBLE_QUEUE* dq, bool isFront) {
 int main() {
     DOUBLE_QUEUE dq;
     initializeDoubleQueue(&dq);
-    
+
     // Test Normal Allocate
 
     for (size_t i = 1; i < 11; i++) {
