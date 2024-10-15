@@ -52,6 +52,19 @@ void print_token(precedence token) {
     }
 }
 
+char getTokenChar(precedence token) {
+    switch (token) {
+        case lparen: return '(';
+        case rparen: return ')';
+        case plus: return '+';
+        case minus: return '-';
+        case times: return '*';
+        case divide: return '/';
+        case mod: return '%';
+        case eos: return 'eos';
+    }
+}
+
 precedence stack[MAX_STACK_SIZE];
 static int isp[] = { 0, 19, 12, 12, 13, 13, 13, 0 };
 static int icp[] = { 20, 19, 12, 12, 13, 13, 13, 0 };
@@ -95,8 +108,7 @@ void postfix() {
     printf("\n");
 }
 
-void prefixConverter() {
-
+void reverseConverter() {
     strrev(expr);
 
     for (size_t i = 0; i < strlen(expr); i++) {
@@ -104,41 +116,58 @@ void prefixConverter() {
         else if (expr[i] == '(') expr[i] = ')';
     }
 
+    return;
+}
+
+void prefixConverter() {
     char symbol;
     precedence token;
     int n = 0;
     int top = 0;
     stack[0] = eos;
+    char result[MAX_EXPR_SIZE];
+    int index = 0;
+
+    reverseConverter();
 
     for (token = get_token(&symbol, &n); token != eos; token = get_token(&symbol, &n)) {
         if (token == operand) {
-            printf("%c", symbol);
+            result[index] = symbol;
+            index++;
         }
         else if (token == rparen) {
             while (stack[top] != lparen) {
-                print_token(delete(&top));
+                result[index] = getTokenChar(delete(&top));
+                index++;
             }
             delete(&top);
         }
         else {
             while (isp[stack[top]] > icp[token]) {
-                print_token(delete(&top));
+                result[index] = getTokenChar(delete(&top));
+                index++;
             }
             add(&top, token);
         }
     }
     while ((token = delete(&top)) != eos) {
-        print_token(token);
+        result[index] = getTokenChar(token);
+        index++;
     }
-    printf("\n");
+    result[index] = '\0';
+
+    reverseConverter();
+    strrev(result);
+
+    printf("%s", result);
+
+    return;
 }
 
 int main() {
 
-
     postfix();
     prefixConverter();
-
 
     return 0;
 }
