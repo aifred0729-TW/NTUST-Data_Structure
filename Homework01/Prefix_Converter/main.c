@@ -159,15 +159,16 @@ void prefixConverter() {
     reverseConverter();
     strrev(result);
 
-    printf("%s", result);
+    printf("%s\n", result);
 
     return;
 }
 
 int main() {
-
-    postfix();
-    prefixConverter();
+    while (true) {
+        scanf("%s", expr);
+        prefixConverter();
+    }
 
     return 0;
 }
